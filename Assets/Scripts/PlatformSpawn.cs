@@ -1,21 +1,22 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class PlatformSpawner : MonoBehaviour
 {
-    [Header("Prefab & Spawn Settings")]
     [SerializeField] private GameObject platformPrefab;
-    [SerializeField] private int initialPlatformCount = 5;
+    [SerializeField] private Transform player;
+    [SerializeField] private int maxVisiblePlatforms = 5;
     [SerializeField] private float platformLength = 10f;
-    [SerializeField] private float spawnZStart = 0f;
-    [SerializeField] private float spawnDistance = 50f;
+    [SerializeField] private float spawnTriggerDistance = 30f;
 
-    private float currentSpawnZ;
+    private float nextSpawnZ;
+    private Queue<GameObject> activePlatforms = new Queue<GameObject>();
 
     void Start()
     {
-        currentSpawnZ = spawnZStart;
+        nextSpawnZ = Mathf.Floor(player.position.z / platformLength) * platformLength;
 
-        for (int i = 0; i < initialPlatformCount; i++)
+        for (int i = 0; i < maxVisiblePlatforms; i++)
         {
             SpawnPlatform();
         }
@@ -23,8 +24,13 @@ public class PlatformSpawner : MonoBehaviour
 
     void Update()
     {
-        // Selalu cek jika ujung platform sudah mendekati spawnDistance, spawn platform baru
-        if (currentSpawnZ - Camera.main.transform.position.z < spawnDistance)
+        if (player == null)
+        {
+            Debug.LogWarning("Player belum diassign!");
+            return;
+        }
+
+        if (player.position.z + spawnTriggerDistance >= nextSpawnZ)
         {
             SpawnPlatform();
         }
@@ -32,14 +38,15 @@ public class PlatformSpawner : MonoBehaviour
 
     void SpawnPlatform()
     {
-        if (platformPrefab == null)
-        {
-            Debug.LogError("Platform Prefab belum diatur di Inspector.");
-            return;
-        }
+        Vector3 spawnPos = new Vector3(0, 0, nextSpawnZ);
+        GameObject platform = Instantiate(platformPrefab, spawnPos, Quaternion.identity);
+        activePlatforms.Enqueue(platform);
+        nextSpawnZ += platformLength;
 
-        Vector3 spawnPos = new Vector3(0, 0, currentSpawnZ);
-        Instantiate(platformPrefab, spawnPos, Quaternion.identity);
-        currentSpawnZ += platformLength;
+        if (activePlatforms.Count > maxVisiblePlatforms)
+        {
+            GameObject old = activePlatforms.Dequeue();
+            Destroy(old);
+        }
     }
 }
