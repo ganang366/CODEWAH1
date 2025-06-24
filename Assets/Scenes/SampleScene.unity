@@ -250,13 +250,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.120673046, y: -0, z: -0, w: 0.9926923}
-  m_LocalPosition: {x: 0, y: 5.1, z: -8.19}
+  m_LocalRotation: {x: 0.11320323, y: 0, z: 0, w: 0.9935719}
+  m_LocalPosition: {x: 0, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 13.862, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 13, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,9 +481,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1283819417}
   - component: {fileID: 1283819416}
+  - component: {fileID: 1283819418}
   m_Layer: 0
   m_Name: PlatformSpawner
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -500,11 +501,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866eff69b0e374a43b3b07aa4e961339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformPrefab: {fileID: 2950991418246148205, guid: ce40d82f5b6ef8f4d9c63f702dbc240b, type: 3}
   player: {fileID: 1979384520}
-  maxVisiblePlatforms: 5
-  platformLength: 10
-  spawnTriggerDistance: 10
+  platformPrefab: {fileID: 2950991418246148205, guid: ce40d82f5b6ef8f4d9c63f702dbc240b, type: 3}
+  platformSpacing: 10
+  spawnAhead: 60
+  destroyBehind: 100
+  speedBuffPickupPrefab: {fileID: 1539982407613214916, guid: 2fda1af479c1a564498ecf7c5998a711, type: 3}
+  minPlatformBetweenBuff: 5
+  maxPlatformBetweenBuff: 8
+  laneDistance: 3
+  showDebugInfo: 1
+  forceSpawnOnStart: 1
 --- !u!4 &1283819417
 Transform:
   m_ObjectHideFlags: 0
@@ -520,6 +527,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1283819418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283819415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf3444b6b12951469d483beb10003fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSpeed: 5
+  currentSpeed: 0
 --- !u!1 &1979384515
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,9 +555,10 @@ GameObject:
   - component: {fileID: 1979384517}
   - component: {fileID: 1979384516}
   - component: {fileID: 1979384521}
+  - component: {fileID: 1979384522}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -653,7 +675,7 @@ Transform:
   m_GameObject: {fileID: 1979384515}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -671,9 +693,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc998f8b83b1b6a4f84b8ed78ed114e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laneDistance: 3.5
+  laneDistance: 3
   moveSpeed: 8
   jumpForce: 5
+--- !u!136 &1979384522
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979384515}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
